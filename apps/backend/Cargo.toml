@@ -1,0 +1,18 @@
+[package]
+name = "backend"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+axum = "0.7"
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+dotenvy = "0.15"
+
+# Pour la base de données
+sqlx = { version = "0.7", features = [ "runtime-tokio-rustls", "postgres" ] }
+
+# Pour l'authentification
+jsonwebtoken = "8"
+chrono = "0.4"

@@ -1,0 +1,14 @@
+{
+  "name": "@saas/eslint-config-custom",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "eslint-config-next": "14.2.3",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-react": "7.33.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
