@@ -1,16 +1,50 @@
-version: '3.8'
-
 services:
   postgres:
-    image: postgres:15-alpine
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=saas_db
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  backend:
+    build:
+      context: ../../
+      dockerfile: infrastructure/docker/Dockerfile.backend
+      args:
+        # On passe l'URL de la DB locale au build pour que `sqlx prepare` puisse fonctionner
+        DATABASE_URL: postgres://postgres:password@localhost:5432/saas_db
+    ports:
+      - "8000:8000"
     environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=saasdb
+      - SERVER__HOST=0.0.0.0
+      - SERVER__PORT=8000
+      - DATABASE__HOST=postgres
+      - DATABASE__PORT=5432
+      - DATABASE__USERNAME=postgres
+      - DATABASE__PASSWORD=password
+      - DATABASE__DBNAME=saas_db
+      - DATABASE_URL=postgres://postgres:password@postgres:5432/saas_db # <-- IMPORTANT
+      - REDIS__URI=redis://redis:6379/
+      - AUTH__JWT_ACCESS_SECRET=your_super_secret_access_key
+      - AUTH__JWT_ACCESS_EXPIRES_IN=15m
+      - AUTH__JWT_REFRESH_SECRET=your_super_secret_refresh_key
+      - AUTH__JWT_REFRESH_EXPIRES_IN=7d
+      - RUST_LOG=info,backend=debug,tower_http=debug
+    depends_on:
+      - postgres
+      - redis
 
 volumes:
   postgres_data:
+  redis_data:

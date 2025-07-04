@@ -1,0 +1,16 @@
+# Ignorer les dépendances et les fichiers de build
+/node_modules
+/.pnpm-lock.yaml
+/apps/frontend/.next
+/apps/backend/target
+/apps/backend/Cargo.lock
+
+# Fichiers d'environnement
+.env
+.env*.local
+
+# Fichiers de log et de cache
+*.log
+.DS_Store
+/docs/.vitepress/cache
+/docs/.vitepress/dist

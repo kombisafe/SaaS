@@ -4,15 +4,54 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-axum = "0.7"
+# --- Web Framework & Async Runtime ---
+axum = { version = "0.7", features = ["macros"] }
 tokio = { version = "1", features = ["full"] }
+tower = { version = "0.4", features = ["full"] }
+tower-http = { version = "0.5", features = ["cors", "trace", "compression-br"] }
+axum-extra = { version = "0.9", features = ["typed-header", "cookie"] }
+
+# --- Serialization / Deserialization ---
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+
+# --- Database & Cache ---
+sqlx = { version = "0.7", features = ["runtime-tokio-rustls", "postgres", "macros", "uuid", "chrono", "json"] }
+redis = { version = "0.25", features = ["tokio-comp"] }
+
+# --- Authentication & Security ---
+jsonwebtoken = "9"
+argon2 = { version = "0.5", features = ["std"] }
+rand = "0.8"
+axum-login = "0.13.0"
+secrecy = { version = "0.8", features = ["serde"] }
+base64 = "0.22.0"
+
+# --- Configuration ---
+config = { version = "0.14", features = ["yaml"] }
 dotenvy = "0.15"
 
-# Pour la base de données
-sqlx = { version = "0.7", features = [ "runtime-tokio-rustls", "postgres" ] }
+# --- Error Handling ---
+anyhow = "1.0"
+thiserror = "1.0"
 
-# Pour l'authentification
-jsonwebtoken = "8"
-chrono = "0.4"
+# --- Logging & Tracing ---
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# --- Utilities ---
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+duration-str = "0.7.0"
+utoipa = { version = "4", features = ["axum_extras"] }
+utoipa-swagger-ui = { version = "6.0.0", features = ["axum"] }
+
+[dev-dependencies]
+reqwest_cookie_store = "0.7"
+tokio-test = "0.4"
+mockall = "0.12"
+wiremock = "0.6"
+reqwest = { version = "0.12", features = ["json", "cookies"] }
+serde_json = "1.0"
+insta = "1"
+rstest = "0.19"
